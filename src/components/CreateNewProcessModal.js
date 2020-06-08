@@ -7,6 +7,7 @@ import faker from 'faker';
 import { postProcesses } from '../redux/actions/process-actions';
 import { postJobs } from '../redux/actions/jobs-actions';
 import BaseButton from './BaseButton';
+import { parseDate } from '../utils';
 
 const customStyles = {
   overlay: {
@@ -35,7 +36,6 @@ const CreateNewProcessModal = (props) => {
   const jobs = [];
 
   useEffect(() => createJobsData(), [process]);
-
 
   const createProcessData = () => {
     const id = uuidv1();
@@ -94,7 +94,7 @@ const CreateNewProcessModal = (props) => {
         </p>
         <p>
           <DataKey>Start time:</DataKey>
-          <span>{process.startTime && process.startTime.toString()}</span>
+          <span>{process.startTime && parseDate(process.startTime)}</span>
         </p>
       </div>
 

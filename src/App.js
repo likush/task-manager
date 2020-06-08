@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
+import { fetchProcesses } from './redux/actions/process-actions';
+import { fetchJobs } from './redux/actions/jobs-actions';
 import BaseButton from './components/BaseButton';
 import CreateNewProcessModal from './components/CreateNewProcessModal';
 import ProcessList from './components/ProcessList';
-import { fetchProcesses } from './redux/actions/process-actions';
-import { fetchJobs } from './redux/actions/jobs-actions';
+import SortBtnGroup from './components/SortBtnGroup';
 
 const App = () => {
   const dispatch = useDispatch();
   const processes = useSelector(state => state.processes);
   const jobs = useSelector(state => state.jobs);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortType, changeSortType] = useState('name')
 
   useEffect(() => {
     dispatch(fetchProcesses());
@@ -26,7 +28,8 @@ const App = () => {
       <Header><span>Task manager</span></Header>
 
       <Content>
-        {isProcessListShown && <ProcessList/>}
+        <SortBtnGroup sortType={sortType} changeSortType={changeSortType}/>
+        {isProcessListShown && <ProcessList sortType={sortType}/>}
       </Content>
 
       <AddBtn onClick={() => setIsModalOpen(true)}>+</AddBtn>
@@ -49,7 +52,6 @@ const Header = styled.header`
   padding: 0 30px;
   color: white;
 `;
-
 
 const Content = styled.div`
   padding: 30px

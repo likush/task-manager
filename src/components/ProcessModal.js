@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
-import styled  from 'styled-components';
-import { getStatusColor } from '../utils';
+import styled from 'styled-components';
+import { getStatusColor, parseDate } from '../utils';
 import BaseButton from './BaseButton';
 
 
@@ -30,7 +30,7 @@ const ProcessModal = (props) => {
     >
       <ModalInner>
         <Title>{activeProcess.name}</Title>
-        <p>{`Start date: ${activeProcess.startTime}`}</p>
+        {activeProcess.startTime && <p>{`Start date: ${parseDate(activeProcess.startTime)}`}</p>}
         <p>
           <span>Process status:</span>
           <Status color={getStatusColor(processStatus)}>{processStatus}</Status>

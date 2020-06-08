@@ -3,16 +3,21 @@ import styled, { withTheme, css } from 'styled-components';
 import { useSelector } from 'react-redux';
 import BaseButton from './BaseButton';
 import ProcessModal from './ProcessModal';
-import { getProcessStatus, getStatusColor } from '../utils';
+import {
+  getProcessStatus,
+  getStatusColor,
+  sortProcessesByJobsCount,
+  sortProcessesByStartDate,
+  sortProcessesByName,
+  parseDate
+} from '../utils';
 
-const ProcessList = () => {
+const ProcessList = (props) => {
+  const {sortType} = props;
   const processes = useSelector(state => state.processes.result);
   const jobs = useSelector(state => state.jobs.result);
 
-  const [processModalData, changeProcessModalData] = useState({
-    isOpen: false,
-    activeProcess: {}
-  });
+  const [processModalData, changeProcessModalData] = useState({isOpen: false, activeProcess: {}});
 
   const openModal = (process, jobs, status) => changeProcessModalData(prevState => ({
     ...prevState,
@@ -30,11 +35,24 @@ const ProcessList = () => {
     activeProcessJobs: []
   }));
 
+  const handleSortingProcesses = () => {
+    if (sortType === 'name') {
+      return sortProcessesByName(processes);
+    } else if (sortType === 'jobsCount') {
+      return sortProcessesByJobsCount(processes);
+    } else if (sortType === 'startDate') {
+      return sortProcessesByStartDate(processes);
+    }
+  };
+
+  const sortedProcesses = handleSortingProcesses();
+
   return (
     <ProcessesContainer>
-      {processes.map((process) => {
+      {sortedProcesses.map((process) => {
         const {id, name, startTime, jobsCount} = process;
         const processJobs = jobs.get(id);
+
         const jobsStatuses = processJobs.map(process => process.status);
         const processStatus = getProcessStatus(jobsStatuses);
 
@@ -42,7 +60,7 @@ const ProcessList = () => {
           <ProcessItem key={id}>
             <ProcessContent>
               <ProcessName>{name}</ProcessName>
-              <ProcessData>{`Started: ${startTime}`}</ProcessData>
+              <ProcessData>{`Started: ${parseDate(startTime)}`}</ProcessData>
               <ProcessData>
                 <span>Status:</span>
                 <ProcessStatus color={getStatusColor(processStatus)}>{processStatus}</ProcessStatus>

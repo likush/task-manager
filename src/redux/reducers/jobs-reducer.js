@@ -24,7 +24,7 @@ function jobsReducer (state = initialState, action) {
       return {...state, error: action.error, isLoading: false};
 
     case POST_JOBS: {
-      return {...state, isLoading: true};
+      return {...state, isLoading: true, result: [...state.result, action.newJobs]};
     }
     case POST_JOBS_SUCCEEDED: {
       return {...state, isLoading: false};

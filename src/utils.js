@@ -9,7 +9,11 @@ export function getJsonValue (key, value) {
 }
 
 export function parseDate (date) {
-  return date.toISOString().slice(0, 16).replace('T', ' ');
+  if (typeof date === 'string') {
+    return date.slice(0, 16).replace('T', ' ');
+  } else {
+    return date.toISOString().slice(0, 16).replace('T', ' ');
+  }
 }
 
 export function getStatusColor (status) {
@@ -39,4 +43,16 @@ export function getProcessStatus (statuses) {
   } else if (statuses.some(status => status === 'failed')) {
     return 'failed';
   }
+}
+
+export const sortProcessesByName = (processes) => processes.sort((a, b) => a.name.localeCompare(b.name));
+export const sortProcessesByJobsCount = (processes) => processes.sort((a, b) => a.jobsCount - b.jobsCount);
+export const sortProcessesByStartDate = (processes) => processes.sort((a, b) =>
+  a.startTime - b.startTime);
+
+export function getParsedProcessResult (data) {
+  const parsedData = JSON.parse(data);
+  return parsedData.map(item => ({
+    ...item, startTime: new Date(item.startTime)
+  }));
 }

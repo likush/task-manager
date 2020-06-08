@@ -24,7 +24,7 @@ function processesReducer (state = initialState, action) {
       return {...state, error: action.error, isLoading: false};
 
     case POST_PROCESSES: {
-      return {...state, isLoading: true};
+      return {...state, isLoading: true, result: [...state.result, action.newProcess]};
     }
     case POST_PROCESSES_SUCCEEDED: {
       return {...state, isLoading: false};
