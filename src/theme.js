@@ -3,10 +3,10 @@ const theme = {
     blue: '#36586D',
     violet: '#604862',
     purple: '#a05775',
-    pink: '#C49A9C',
-    cream: '#ECEDE9',
-    green: '#839362',
-    lightgray: '#e0e0e0'
+    green: '#2B9348',
+    lightgray: '#e0e0e0',
+    orange: '#E0A800',
+    red: '#d80032'
   }
 };
 export default theme;

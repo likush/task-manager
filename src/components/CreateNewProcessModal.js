@@ -40,7 +40,7 @@ const CreateNewProcessModal = (props) => {
   const createProcessData = () => {
     const id = uuidv1();
     const name = faker.random.words();
-    const startTime = new Date().toString();
+    const startTime = new Date();
     const jobsCount = Math.floor(Math.random() * (10 - 1) + 1);
 
     setProcess({id, name, startTime, jobsCount});
@@ -70,7 +70,6 @@ const CreateNewProcessModal = (props) => {
     closeModal();
   };
 
-
   return (
     <Modal
       isOpen={isOpen}
@@ -95,7 +94,7 @@ const CreateNewProcessModal = (props) => {
         </p>
         <p>
           <DataKey>Start time:</DataKey>
-          <span>{process.startTime}</span>
+          <span>{process.startTime && process.startTime.toString()}</span>
         </p>
       </div>
 

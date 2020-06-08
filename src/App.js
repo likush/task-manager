@@ -19,12 +19,14 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const isProcessListShown = processes.result.length > 0 && jobs.result.size;
+
   return (
     <MainContainer>
       <Header><span>Task manager</span></Header>
 
       <Content>
-        {processes.result.length > 0 && <ProcessList/>}
+        {isProcessListShown && <ProcessList/>}
       </Content>
 
       <AddBtn onClick={() => setIsModalOpen(true)}>+</AddBtn>
