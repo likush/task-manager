@@ -3,11 +3,7 @@ import {
   FETCH_JOBS_SUCCEEDED,
   FETCH_JOBS_FAILED,
   POST_JOBS,
-  POST_JOBS_FAILED,
-  POST_JOBS_SUCCEEDED,
   DELETE_JOBS,
-  DELETE_JOBS_SUCCEEDED,
-  DELETE_JOBS_FAILED
 } from '../actions/jobs-actions';
 
 const initialState = {
@@ -22,7 +18,11 @@ function jobsReducer (state = initialState, action) {
       return {...state, isLoading: true};
     }
     case FETCH_JOBS_SUCCEEDED:
-      return {...state, result: action.result, isLoading: false};
+      if (action.result) {
+        return {...state, result: action.result, isLoading: false};
+      } else {
+        return {...state, isLoading: false};
+      }
     case FETCH_JOBS_FAILED:
       return {...state, error: action.error, isLoading: false};
 
@@ -33,22 +33,10 @@ function jobsReducer (state = initialState, action) {
         result: {...state.result, [action.processId]: action.newJobs}
       };
     }
-    case POST_JOBS_SUCCEEDED: {
-      return {...state, isLoading: false};
-    }
-    case POST_JOBS_FAILED: {
-      return {...state, isLoading: false, error: action.error};
-    }
 
     case DELETE_JOBS: {
       const {[action.processId]: deletedJob, ...result} = state.result;
       return {...state, isLoading: true, result};
-    }
-    case DELETE_JOBS_SUCCEEDED: {
-      return {...state, isLoading: false};
-    }
-    case DELETE_JOBS_FAILED: {
-      return {...state, isLoading: false, error: action.error};
     }
 
     default:

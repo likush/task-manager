@@ -25,9 +25,6 @@ const App = () => {
 
   const isProcessListShown = processes.result.length > 0 && Object.keys(jobs.result).length > 0;
 
-  console.log('jobs', jobs.result)
-  console.log('process', processes.result)
-
   const renderContent = () => {
     const isLoading = processes.isLoading || processes.isLoading;
 

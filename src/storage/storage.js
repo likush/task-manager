@@ -8,6 +8,7 @@ export async function getFromStorage (key) {
   });
 }
 
+// back-end emulation
 export async function insertToStorage (key, value) {
   return new Promise(resolve => {
     setTimeout(() => {
