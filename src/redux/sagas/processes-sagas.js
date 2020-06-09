@@ -5,11 +5,7 @@ import {
   FETCH_PROCESSES_FAILED,
   FETCH_PROCESSES_SUCCEEDED,
   POST_PROCESSES,
-  POST_PROCESSES_SUCCEEDED,
-  POST_PROCESSES_FAILED,
   DELETE_PROCESS,
-  DELETE_PROCESS_SUCCEEDED,
-  DELETE_PROCESS_FAILED
 } from '../actions/process-actions';
 import { getFromStorage, insertToStorage, deleteFromStorage } from '../../storage/storage';
 
@@ -31,10 +27,10 @@ export function* watchFetchProcesses () {
 export function* postProcessesSaga (action) {
   try {
     yield insertToStorage('processes', action.newProcess);
-    yield put({type: POST_PROCESSES_SUCCEEDED});
+    yield put({type: FETCH_PROCESSES_SUCCEEDED});
     yield put({type: FETCH_PROCESSES});
   } catch (err) {
-    yield put({type: POST_PROCESSES_FAILED});
+    yield put({type: FETCH_PROCESSES_FAILED});
   }
 }
 
@@ -45,10 +41,10 @@ export function* watchPostProcesses () {
 export function* deleteProcessSaga (action) {
   try {
     yield deleteFromStorage('processes', action.processId);
-    yield put({type: DELETE_PROCESS_SUCCEEDED});
+    yield put({type: FETCH_PROCESSES_SUCCEEDED});
     yield put({type: FETCH_PROCESSES});
   } catch (err) {
-    yield put({type: DELETE_PROCESS_FAILED});
+    yield put({type: FETCH_PROCESSES_FAILED});
   }
 }
 
