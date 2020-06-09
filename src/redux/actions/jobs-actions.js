@@ -11,6 +11,6 @@ export const fetchJobs = () => ({type: FETCH_JOBS});
 export const fetchJobsSucceeded = (result) => ({type: FETCH_JOBS_SUCCEEDED, result});
 export const fetchJobsFailed = (error) => ({type: FETCH_JOBS_FAILED, error});
 
-export const postJobs = (newJobs) => ({type: POST_JOBS, newJobs});
+export const postJobs = (processId, newJobs) => ({type: POST_JOBS, processId, newJobs});
 export const postJobsSucceeded = () => ({type: POST_JOBS_SUCCEEDED});
 export const postJobsFailed = (error) => ({type: POST_JOBS_FAILED, error});

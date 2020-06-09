@@ -5,14 +5,19 @@ import {
   FETCH_PROCESSES_FAILED,
   FETCH_PROCESSES_SUCCEEDED,
   POST_PROCESSES,
-  POST_PROCESSES_SUCCEEDED
+  POST_PROCESSES_SUCCEEDED,
+  POST_PROCESSES_FAILED,
+  DELETE_PROCESS,
+  DELETE_PROCESS_SUCCEEDED,
+  DELETE_PROCESS_FAILED
 } from '../actions/process-actions';
-import { getFromStorage, setToStorage } from '../../storage/storage';
+import { getFromStorage, insertToStorage, setToStorage } from '../../storage/storage';
+import { getParsedProcessResult } from '../../utils';
 
 export function* fetchProcessesSaga () {
   try {
     const data = yield getFromStorage('processes');
-    const result = data ? JSON.parse(data) : [];
+    const result = data ? data : [];
 
     yield put({type: FETCH_PROCESSES_SUCCEEDED, result});
   } catch (err) {
@@ -26,14 +31,27 @@ export function* watchFetchProcesses () {
 
 export function* postProcessesSaga (action) {
   try {
-    yield setToStorage('processes', action.newProcess);
+    yield insertToStorage('processes', action.newProcess);
     yield put({type: POST_PROCESSES_SUCCEEDED});
     yield put({type: FETCH_PROCESSES});
   } catch (err) {
-    console.log(err);
+    yield put({type: POST_PROCESSES_FAILED});
   }
 }
 
 export function* watchPostProcesses () {
   yield takeEvery(POST_PROCESSES, postProcessesSaga);
+}
+
+export function* deleteProcessSaga (action) {
+  try {
+
+
+  } catch (err) {
+    yield put({type: DELETE_PROCESS_FAILED});
+  }
+}
+
+export function* watchDeleteProcess () {
+  yield takeEvery(DELETE_PROCESS, deleteProcessSaga);
 }

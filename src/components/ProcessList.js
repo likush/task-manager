@@ -45,19 +45,27 @@ const ProcessList = (props) => {
     }
   };
 
+  const deleteProcess = (event, processId) => {
+    event.stopPropagation();
+    const newProcesses = processes.filter(process => process.id !== processId);
+    jobs.delete(processId);
+
+    console.log(newProcesses, jobs);
+  };
+
   const sortedProcesses = handleSortingProcesses();
 
   return (
     <ProcessesContainer>
       {sortedProcesses.map((process) => {
         const {id, name, startTime, jobsCount} = process;
-        const processJobs = jobs.get(id);
+        const processJobs = jobs[id];
 
         const jobsStatuses = processJobs.map(process => process.status);
         const processStatus = getProcessStatus(jobsStatuses);
 
         return (
-          <ProcessItem key={id}>
+          <ProcessItem onClick={() => openModal(process, processJobs, processStatus)} key={id}>
             <ProcessContent>
               <ProcessName>{name}</ProcessName>
               <ProcessData>{`Started: ${parseDate(startTime)}`}</ProcessData>
@@ -67,8 +75,8 @@ const ProcessList = (props) => {
               </ProcessData>
               <ProcessData>{`Jobs count: ${jobsCount}`}</ProcessData>
             </ProcessContent>
-            <ToggleJobsBtn onClick={() => openModal(process, processJobs, processStatus)}>
-              Show process
+            <ToggleJobsBtn onClick={event => deleteProcess(event, id)}>
+              Delete process
             </ToggleJobsBtn>
           </ProcessItem>
         );
@@ -89,6 +97,14 @@ const ProcessItem = styled.div`
   width: 300px;
   height: max-content;
   margin: 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 8px;
+  
+  &:hover {
+     box-shadow: rgba(0,0,0,0.3) 0 0 10px;
+
+  }
 `;
 
 const ProcessContent = styled.div`

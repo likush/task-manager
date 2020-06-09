@@ -1,19 +1,25 @@
-import { getJsonValue } from '../utils';
-
 export async function getFromStorage (key) {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(localStorage.getItem(key));
+      resolve(JSON.parse(localStorage.getItem(key)));
     }, 300);
   });
 }
 
-export async function setToStorage (key, value) {
-  const jsonValue = getJsonValue(key, value);
 
+export async function insertToStorage (key, value) {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(localStorage.setItem(key, jsonValue));
-    }, 1000);
+      const defaultValue = key === 'processes' ? [] : {};
+      const jsonValue = (JSON.parse(localStorage.getItem(key))) || defaultValue;
+      let result;
+
+      if (key === 'processes') {
+        result = [...jsonValue, value];
+      } else if (key === 'jobs') {
+        result = {...jsonValue, ...value};
+      }
+      resolve(localStorage.setItem(key, JSON.stringify(result)));
+    }, 300);
   });
 }

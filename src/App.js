@@ -10,10 +10,13 @@ import SortBtnGroup from './components/SortBtnGroup';
 
 const App = () => {
   const dispatch = useDispatch();
-  const processes = useSelector(state => state.processes);
-  const jobs = useSelector(state => state.jobs);
+  const processes = useSelector(state => state.processes.result);
+  const jobs = useSelector(state => state.jobs.result);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sortType, changeSortType] = useState('name')
+  const [sortType, changeSortType] = useState('name');
+
+  // console.log('processes', processes);
+  // console.log('jobs', jobs);
 
   useEffect(() => {
     dispatch(fetchProcesses());
@@ -21,7 +24,7 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isProcessListShown = processes.result.length > 0 && jobs.result.size;
+  const isProcessListShown = processes.length > 0 && Object.keys(jobs).length > 0;
 
   return (
     <MainContainer>

@@ -1,5 +1,5 @@
 import { all } from 'redux-saga/effects';
-import { watchFetchProcesses, watchPostProcesses } from './processes-sagas';
+import { watchFetchProcesses, watchPostProcesses, watchDeleteProcess } from './processes-sagas';
 import { watchFetchJobs, watchPostJobs } from './jobs-sagas';
 
 export default function* rootSaga () {
@@ -7,6 +7,7 @@ export default function* rootSaga () {
     watchFetchProcesses(),
     watchPostProcesses(),
     watchFetchJobs(),
-    watchPostJobs()
+    watchPostJobs(),
+    watchDeleteProcess()
   ]);
 }

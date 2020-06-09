@@ -7,12 +7,12 @@ import {
   POST_JOBS_SUCCEEDED,
   POST_JOBS_FAILED
 } from '../actions/jobs-actions';
-import { getFromStorage, setToStorage } from '../../storage/storage';
+import { getFromStorage, insertToStorage } from '../../storage/storage';
 
 export function* fetchJobsSaga () {
   try {
     const data = yield getFromStorage('jobs');
-    const result = data ? new Map(JSON.parse(data)) : new Map();
+    const result = data ? data : {};
 
     yield put({type: FETCH_JOBS_SUCCEEDED, result});
   } catch (err) {
@@ -26,7 +26,7 @@ export function* watchFetchJobs () {
 
 export function* postJobsSaga (action) {
   try {
-    yield setToStorage('jobs', action.newJobs);
+    yield insertToStorage('jobs', {[action.processId]: action.newJobs});
     yield put({type: POST_JOBS_SUCCEEDED});
     yield put({type: FETCH_JOBS});
   } catch (error) {

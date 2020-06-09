@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import styled, { withTheme } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { v1 as uuidv1 } from 'uuid';
 import faker from 'faker';
 import { postProcesses } from '../redux/actions/process-actions';
@@ -29,22 +29,21 @@ const jobsStatuses = ['running', 'success', 'failed'];
 const CreateNewProcessModal = (props) => {
   const {isOpen, closeModal} = props;
   const dispatch = useDispatch();
-  const prevProcesses = useSelector(state => state.processes.result);
-  const prevJobs = useSelector(state => state.jobs.result);
 
   const [process, setProcess] = useState({});
   const jobs = [];
 
-  useEffect(() => createJobsData(), [process]);
+  useEffect(() => createJobsData(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [process]);
 
   const createProcessData = () => {
     const id = uuidv1();
     const name = faker.random.words();
-    const startTime = new Date();
+    const startTime = new Date().toISOString();
     const jobsCount = Math.floor(Math.random() * (10 - 1) + 1);
 
     setProcess({id, name, startTime, jobsCount});
-
   };
 
   const createJobsData = () => {
@@ -61,11 +60,8 @@ const CreateNewProcessModal = (props) => {
   };
 
   const dispatchActions = () => {
-    const newProcesses = [...prevProcesses, process];
-    const newJobs = new Map(prevJobs).set(process.id, jobs);
-
-    dispatch(postProcesses(newProcesses));
-    dispatch(postJobs(newJobs));
+    dispatch(postJobs(process.id, jobs));
+    dispatch(postProcesses(process));
 
     closeModal();
   };

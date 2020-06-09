@@ -48,7 +48,7 @@ export function getProcessStatus (statuses) {
 export const sortProcessesByName = (processes) => processes.sort((a, b) => a.name.localeCompare(b.name));
 export const sortProcessesByJobsCount = (processes) => processes.sort((a, b) => a.jobsCount - b.jobsCount);
 export const sortProcessesByStartDate = (processes) => processes.sort((a, b) =>
-  a.startTime - b.startTime);
+  a.startTime.localeCompare(b.startTime));
 
 export function getParsedProcessResult (data) {
   const parsedData = JSON.parse(data);
