@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styled, { withTheme, css } from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BaseButton from './BaseButton';
 import ProcessModal from './ProcessModal';
+import { deleteJobs } from '../redux/actions/jobs-actions';
+import { deleteProcess } from '../redux/actions/process-actions';
+
 import {
   getProcessStatus,
   getStatusColor,
@@ -14,6 +17,7 @@ import {
 
 const ProcessList = (props) => {
   const {sortType} = props;
+  const dispatch = useDispatch();
   const processes = useSelector(state => state.processes.result);
   const jobs = useSelector(state => state.jobs.result);
 
@@ -45,12 +49,10 @@ const ProcessList = (props) => {
     }
   };
 
-  const deleteProcess = (event, processId) => {
+  const deleteProcessAndJobs = (event, processId) => {
     event.stopPropagation();
-    const newProcesses = processes.filter(process => process.id !== processId);
-    jobs.delete(processId);
-
-    console.log(newProcesses, jobs);
+    dispatch(deleteProcess(processId));
+    dispatch(deleteJobs(processId));
   };
 
   const sortedProcesses = handleSortingProcesses();
@@ -75,7 +77,7 @@ const ProcessList = (props) => {
               </ProcessData>
               <ProcessData>{`Jobs count: ${jobsCount}`}</ProcessData>
             </ProcessContent>
-            <ToggleJobsBtn onClick={event => deleteProcess(event, id)}>
+            <ToggleJobsBtn onClick={event => deleteProcessAndJobs(event, id)}>
               Delete process
             </ToggleJobsBtn>
           </ProcessItem>

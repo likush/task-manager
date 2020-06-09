@@ -11,8 +11,7 @@ import {
   DELETE_PROCESS_SUCCEEDED,
   DELETE_PROCESS_FAILED
 } from '../actions/process-actions';
-import { getFromStorage, insertToStorage, setToStorage } from '../../storage/storage';
-import { getParsedProcessResult } from '../../utils';
+import { getFromStorage, insertToStorage, deleteFromStorage } from '../../storage/storage';
 
 export function* fetchProcessesSaga () {
   try {
@@ -45,8 +44,9 @@ export function* watchPostProcesses () {
 
 export function* deleteProcessSaga (action) {
   try {
-
-
+    yield deleteFromStorage('processes', action.processId);
+    yield put({type: DELETE_PROCESS_SUCCEEDED});
+    yield put({type: FETCH_PROCESSES});
   } catch (err) {
     yield put({type: DELETE_PROCESS_FAILED});
   }

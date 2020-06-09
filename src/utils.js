@@ -1,13 +1,5 @@
 import theme from './theme';
 
-export function getJsonValue (key, value) {
-  if (key === 'processes') {
-    return JSON.stringify(value);
-  } else if (key === 'jobs') {
-    return JSON.stringify(Array.from(value.entries()));
-  }
-}
-
 export function parseDate (date) {
   if (typeof date === 'string') {
     return date.slice(0, 16).replace('T', ' ');
@@ -55,4 +47,9 @@ export function getParsedProcessResult (data) {
   return parsedData.map(item => ({
     ...item, startTime: new Date(item.startTime)
   }));
+}
+
+export function getJsonValue (key) {
+  const defaultValue = key === 'processes' ? [] : {};
+  return (JSON.parse(localStorage.getItem(key))) || defaultValue;
 }

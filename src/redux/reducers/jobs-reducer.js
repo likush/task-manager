@@ -4,7 +4,10 @@ import {
   FETCH_JOBS_FAILED,
   POST_JOBS,
   POST_JOBS_FAILED,
-  POST_JOBS_SUCCEEDED
+  POST_JOBS_SUCCEEDED,
+  DELETE_JOBS,
+  DELETE_JOBS_SUCCEEDED,
+  DELETE_JOBS_FAILED
 } from '../actions/jobs-actions';
 
 const initialState = {
@@ -34,6 +37,17 @@ function jobsReducer (state = initialState, action) {
       return {...state, isLoading: false};
     }
     case POST_JOBS_FAILED: {
+      return {...state, isLoading: false, error: action.error};
+    }
+
+    case DELETE_JOBS: {
+      const {[action.processId]: deletedJob, ...result} = state.result;
+      return {...state, isLoading: true, result};
+    }
+    case DELETE_JOBS_SUCCEEDED: {
+      return {...state, isLoading: false};
+    }
+    case DELETE_JOBS_FAILED: {
       return {...state, isLoading: false, error: action.error};
     }
 

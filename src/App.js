@@ -7,16 +7,15 @@ import BaseButton from './components/BaseButton';
 import CreateNewProcessModal from './components/CreateNewProcessModal';
 import ProcessList from './components/ProcessList';
 import SortBtnGroup from './components/SortBtnGroup';
+import EmptyListContent from './components/EmptyListContent';
+import Preloader from './components/Preloader';
 
 const App = () => {
   const dispatch = useDispatch();
-  const processes = useSelector(state => state.processes.result);
-  const jobs = useSelector(state => state.jobs.result);
+  const processes = useSelector(state => state.processes);
+  const jobs = useSelector(state => state.jobs);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortType, changeSortType] = useState('name');
-
-  // console.log('processes', processes);
-  // console.log('jobs', jobs);
 
   useEffect(() => {
     dispatch(fetchProcesses());
@@ -24,15 +23,34 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isProcessListShown = processes.length > 0 && Object.keys(jobs).length > 0;
+  const isProcessListShown = processes.result.length > 0 && Object.keys(jobs.result).length > 0;
+
+  console.log('jobs', jobs.result)
+  console.log('process', processes.result)
+
+  const renderContent = () => {
+    const isLoading = processes.isLoading || processes.isLoading;
+
+    if (isLoading) {
+      return <Preloader/>;
+    } else {
+      return (
+        isProcessListShown ?
+          <div>
+            <SortBtnGroup sortType={sortType} changeSortType={changeSortType}/>
+            <ProcessList sortType={sortType}/>
+          </div>
+          : <EmptyListContent/>
+      );
+    }
+  };
 
   return (
     <MainContainer>
       <Header><span>Task manager</span></Header>
 
       <Content>
-        <SortBtnGroup sortType={sortType} changeSortType={changeSortType}/>
-        {isProcessListShown && <ProcessList sortType={sortType}/>}
+        {renderContent()}
       </Content>
 
       <AddBtn onClick={() => setIsModalOpen(true)}>+</AddBtn>
@@ -70,5 +88,9 @@ const AddBtn = styled(BaseButton)`
   background-color: ${({theme}) => theme.colors.violet};
   color: white;
   font-size: 30px;
+  
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 

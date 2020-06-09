@@ -5,6 +5,9 @@ import {
   POST_PROCESSES,
   POST_PROCESSES_FAILED,
   POST_PROCESSES_SUCCEEDED,
+  DELETE_PROCESS,
+  DELETE_PROCESS_SUCCEEDED,
+  DELETE_PROCESS_FAILED
 } from '../actions/process-actions';
 
 const initialState = {
@@ -30,6 +33,17 @@ function processesReducer (state = initialState, action) {
       return {...state, isLoading: false};
     }
     case POST_PROCESSES_FAILED: {
+      return {...state, isLoading: false, error: action.error};
+    }
+
+    case DELETE_PROCESS: {
+      const newResult = state.result.filter(process => process.id !== action.processId);
+      return {...state, isLoading: true, result: newResult};
+    }
+    case DELETE_PROCESS_SUCCEEDED: {
+      return {...state, isLoading: false};
+    }
+    case DELETE_PROCESS_FAILED: {
       return {...state, isLoading: false, error: action.error};
     }
 

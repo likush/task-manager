@@ -1,3 +1,5 @@
+import { getJsonValue } from '../utils';
+
 export async function getFromStorage (key) {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -5,7 +7,6 @@ export async function getFromStorage (key) {
     }, 300);
   });
 }
-
 
 export async function insertToStorage (key, value) {
   return new Promise(resolve => {
@@ -18,6 +19,23 @@ export async function insertToStorage (key, value) {
         result = [...jsonValue, value];
       } else if (key === 'jobs') {
         result = {...jsonValue, ...value};
+      }
+      resolve(localStorage.setItem(key, JSON.stringify(result)));
+    }, 300);
+  });
+}
+
+export async function deleteFromStorage (key, processId) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const jsonValue = getJsonValue(key);
+
+      let result;
+      if (key === 'processes') {
+        result = jsonValue.filter(process => process.id !== processId)
+      } else if (key === 'jobs') {
+        delete jsonValue[processId]
+        result = {...jsonValue}
       }
       resolve(localStorage.setItem(key, JSON.stringify(result)));
     }, 300);

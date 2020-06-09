@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 import { watchFetchProcesses, watchPostProcesses, watchDeleteProcess } from './processes-sagas';
-import { watchFetchJobs, watchPostJobs } from './jobs-sagas';
+import { watchFetchJobs, watchPostJobs, watchDeleteJobs } from './jobs-sagas';
 
 export default function* rootSaga () {
   yield all([
@@ -8,6 +8,7 @@ export default function* rootSaga () {
     watchPostProcesses(),
     watchFetchJobs(),
     watchPostJobs(),
-    watchDeleteProcess()
+    watchDeleteProcess(),
+    watchDeleteJobs()
   ]);
 }

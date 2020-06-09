@@ -5,9 +5,12 @@ import {
   FETCH_JOBS_SUCCEEDED,
   POST_JOBS,
   POST_JOBS_SUCCEEDED,
-  POST_JOBS_FAILED
+  POST_JOBS_FAILED,
+  DELETE_JOBS,
+  DELETE_JOBS_SUCCEEDED,
+  DELETE_JOBS_FAILED
 } from '../actions/jobs-actions';
-import { getFromStorage, insertToStorage } from '../../storage/storage';
+import { getFromStorage, insertToStorage, deleteFromStorage } from '../../storage/storage';
 
 export function* fetchJobsSaga () {
   try {
@@ -36,4 +39,18 @@ export function* postJobsSaga (action) {
 
 export function* watchPostJobs () {
   yield takeEvery(POST_JOBS, postJobsSaga);
+}
+
+export function* deleteJobsSaga (action) {
+  try {
+    yield deleteFromStorage('jobs', action.processId);
+    yield put({type: DELETE_JOBS_SUCCEEDED});
+    yield put({type: FETCH_JOBS});
+  } catch (error) {
+    yield put({type: DELETE_JOBS_FAILED, error});
+  }
+}
+
+export function* watchDeleteJobs () {
+  yield takeEvery(DELETE_JOBS, postJobsSaga);
 }

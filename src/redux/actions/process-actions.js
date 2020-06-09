@@ -18,6 +18,6 @@ export const postProcesses = (newProcess) => ({type: POST_PROCESSES, newProcess}
 export const postProcessesSucceeded = () => ({type: POST_PROCESSES_SUCCEEDED});
 export const postProcessesFailed = (error) => ({type: POST_PROCESSES_FAILED, error});
 
-export const deleteProcesses = (processId) => ({type: DELETE_PROCESS, processId});
+export const deleteProcess = (processId) => ({type: DELETE_PROCESS, processId});
 export const deleteProcessesSucceeded = () => ({type: DELETE_PROCESS_SUCCEEDED});
 export const deleteProcessesFailed = (error) => ({type: DELETE_PROCESS_FAILED, error});
